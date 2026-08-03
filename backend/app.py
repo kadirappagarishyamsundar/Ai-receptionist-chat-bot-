@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = Flask(__name__, static_folder='../frontend', static_url_path='')
+app = Flask(__name__, static_folder='frontend', static_url_path='')
 CORS(app)
 
 
