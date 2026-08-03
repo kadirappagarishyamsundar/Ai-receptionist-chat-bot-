@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Receptionist - Medical Clinic</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 AI Receptionist</h1>
+            <p>Medical Clinic Assistant</p>
+        </div>
+        
+        <div class="chat-box" id="chatBox">
+            <div class="message ai-message">
+                <p>👋 Hello! I'm your AI receptionist. How can I help you today? 
+                   You can book an appointment, ask about our services, or get more information.</p>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="Type your message..." 
+                onkeypress="handleKeyPress(event)"
+            >
+            <button onclick="sendMessage()">Send</button>
+        </div>
+        
+        <div id="loading" class="loading" style="display: none;">
+            Thinking
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
