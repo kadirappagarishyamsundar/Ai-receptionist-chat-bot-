@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = '/api';
 let userId = 'user_' + Math.random().toString(36).substr(2, 9);
 
 async function sendMessage() {
