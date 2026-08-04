@@ -2,6 +2,14 @@
 
 An AI-powered receptionist chatbot that handles appointment booking for a clinic through natural conversation. Built with Flask, MySQL, and Google Gemini, with a full admin dashboard for managing bookings.
 
+## 🚀 Live Demo
+
+- **Chat interface:** [ai-receptionist-chat-bot-production.up.railway.app/chat-ui](https://ai-receptionist-chat-bot-production.up.railway.app/chat-ui)
+- **Admin dashboard:** [ai-receptionist-chat-bot-production.up.railway.app/admin/dashboard](https://ai-receptionist-chat-bot-production.up.railway.app/admin/dashboard)
+- **API health check:** [ai-receptionist-chat-bot-production.up.railway.app/api/health](https://ai-receptionist-chat-bot-production.up.railway.app/api/health)
+
+Deployed on Railway (Flask + MySQL). ⚠️ The admin dashboard has no authentication yet — this is a known limitation noted below, kept as-is for demo purposes. Please don't enter real personal data when testing.
+
 ## Features
 
 - **Conversational appointment booking** — customers can book in plain English (e.g. "I'd like a Doctor Visit next Friday at 2pm")
@@ -17,7 +25,7 @@ An AI-powered receptionist chatbot that handles appointment booking for a clinic
 - **Backend:** Flask (Python)
 - **Database:** MySQL
 - **AI:** Google Gemini API
-- **Email:** SMTP-based confirmation emails
+- **Email:** [Resend](https://resend.com) (HTTPS-based transactional email API)
 - **Date parsing:** `python-dateutil` + custom natural-language handling
 - **Frontend:** see `frontend/` directory
 
@@ -68,7 +76,8 @@ DB_USER=your-mysql-user
 DB_PASSWORD=your-mysql-password
 DB_NAME=your-database-name
 GEMINI_API_KEY=your-gemini-api-key
-# Email service credentials (see email_service.py for required keys)
+RESEND_API_KEY=your-resend-api-key
+MAIL_FROM=AI Receptionist <onboarding@resend.dev>
 ```
 
 ### 5. Run the app
@@ -98,6 +107,14 @@ http://127.0.0.1:5000/admin/dashboard
 | `/admin/api/appointments/<id>` | DELETE | Delete an appointment |
 | `/admin/api/stats` | GET | Dashboard statistics |
 | `/api/health` | GET | Health check |
+
+## Deployment Notes
+
+Deployed on [Railway](https://railway.com) with a managed MySQL instance in the same project. A few things worth noting from getting this running in production:
+
+- Railway's Free/Trial tier **blocks outbound SMTP ports** (25, 465, 587) to prevent abuse — a direct SMTP connection (e.g. via Flask-Mail to Gmail) will hang until it hits Gunicorn's worker timeout, silently killing the whole request. Switched to [Resend](https://resend.com), which sends over HTTPS (port 443) and isn't affected.
+- Email sending runs on a background thread regardless, so a slow or failing email provider can never block or time out the main request — a booking always saves successfully even if the confirmation email fails.
+- Railway's Root Directory setting scopes the entire build to that folder — the frontend had to live inside `backend/` (not as a sibling directory) to be included in the deployed container.
 
 ## Notes
 
