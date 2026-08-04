@@ -3,6 +3,6 @@ mysql-connector-python==8.0.33
 python-dotenv==1.0.0
 google-genai
 flask-cors==4.0.0
-flask-mail
+requests
 python-dateutil
 gunicorn
